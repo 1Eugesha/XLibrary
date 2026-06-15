@@ -2,7 +2,7 @@
 
 Welcome to XLibrary — a powerful framework for developing Paper plugins!
 
-XLibrary is built to replace the standard approach to creating plugins. The library allows you to easily manage configurations, build multi-level commands with TabCompletion, interact with GUI menus cleanly without inventory event spaghetti, and manipulate schematics directly through its high-performance engine.
+XLibrary is built to replace the standard approach to creating plugins. The library allows you to easily manage configurations, build multi-level commands with TabCompletion, interact with GUI menus cleanly without inventory event spaghetti, and manipulate schematics through a lightweight FastAsyncWorldEdit helper.
 
 ## Installation
 
@@ -33,20 +33,20 @@ depend: [XLibrary]
 Here is an example of how easily you can create a graphical menu:
 
 ```java
-import net.xdevelopment.xlibrary.utility.gui.Menu;
-import net.xdevelopment.xlibrary.utility.gui.slot.MenuSlot;
+import net.xdevelopment.xlibrary.gui.Menu;
+import net.xdevelopment.xlibrary.gui.MenuItem;
 import org.bukkit.Material;
 
-Menu myMenu = new Menu("my_menu", "Super Menu", 3);
-myMenu.setSlot(13, new MenuSlot(Material.DIAMOND)
-    .display("<green>Click me</green>")
-    .executable(new ExecutableClick() {
-        @Override
-        public void onLeft(Player player) {
-            player.sendMessage("You clicked!");
-        }
-    })
-);
+Menu myMenu = Menu.builder()
+    .id("my_menu")
+    .title("Super Menu")
+    .rows(3)
+    .item(13, MenuItem.builder()
+        .material(Material.DIAMOND)
+        .display("<green>Click me</green>")
+        .onClick(context -> context.player().sendMessage("You clicked!"))
+        .build())
+    .build();
 
 player.openInventory(myMenu.getInventory());
 ```

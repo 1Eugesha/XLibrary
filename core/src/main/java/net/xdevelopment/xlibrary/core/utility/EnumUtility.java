@@ -101,7 +101,7 @@ public class EnumUtility {
     public <T> T shifted(@NotNull List<T> values, int currentIndex, int shift) {
         if (values.isEmpty()) throw new IllegalArgumentException("List is empty");
         int index = currentIndex + shift;
-        if (index < 0) return values.getLast();
+        if (index < 0) return values.get(values.size() - 1);
         return values.get(index >= values.size() ? 0 : index);
     }
 }

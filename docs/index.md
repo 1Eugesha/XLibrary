@@ -18,6 +18,6 @@ features:
     details: Create sub-commands effortlessly with Annotations and automatic tab completion.
   - title: Dynamic GUI Engine
     details: Build robust inventory menus with executable clicks, anti-spam, and simple layout control.
-  - title: Extremely Fast Schematics
-    details: Native schematic support tailored for production-grade territory control.
+  - title: FAWE Schematics
+    details: A lightweight FastAsyncWorldEdit helper for async save, paste and undo.
 ---

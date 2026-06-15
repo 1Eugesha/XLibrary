@@ -26,14 +26,40 @@ player.sendMessage(msg);
 
 You can pass `String`, integers, or even other `Component` objects via the Map into `ColorUtility` — it will automatically bind the correct tag resolvers!
 
-## HeadUtility
+## SkullBuilder
 
-Quickly generate Player Head `ItemStack` objects without tedious Reflection.
+Fluently build Player Head `ItemStack` objects without tedious Reflection. Lives in `net.xdevelopment.xlibrary.builder`.
 
 ```java
-// From a Base64 Texture
-ItemStack customHead = HeadUtility.headBuilder("PLAYER_HEAD;eyJ0ZXh0dXJlcyI...");
+import net.xdevelopment.xlibrary.builder.SkullBuilder;
 
-// It is also supported natively inside MenuSlots:
-myMenu.setSlot(10, new MenuSlot("PLAYER_HEAD;eyJ0ZXh..."));
+// From a Base64 texture
+ItemStack customHead = SkullBuilder.create()
+        .texture("eyJ0ZXh0dXJlcyI...")
+        .amount(1)
+        .build();
+
+// From an owning player
+ItemStack playerHead = SkullBuilder.create().owner(somePlayer).build();
+
+// Parse a material name or a "PLAYER_HEAD;<texture>" key (unknown names fall back to BARRIER)
+ItemStack parsed = SkullBuilder.from("DIAMOND").build();
+
+// It is also supported natively inside MenuItems:
+myMenu.setItem(10, new MenuItem("PLAYER_HEAD;eyJ0ZXh..."));
+```
+
+## ButtonBuilder
+
+Fluently build clickable/hoverable chat `Component` buttons. Lives in `net.xdevelopment.xlibrary.builder`.
+
+```java
+import net.xdevelopment.xlibrary.builder.ButtonBuilder;
+
+Component button = ButtonBuilder.of("<green>[Confirm]")
+        .hover("Click to confirm")
+        .command("/confirm")
+        .build();
+
+player.sendMessage(button);
 ```

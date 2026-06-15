@@ -1,4 +1,4 @@
-package net.xdevelopment.xlibrary.schematic.fawe;
+package net.xdevelopment.xlibrary.schematic;
 
 import com.fastasyncworldedit.core.FaweAPI;
 import com.sk89q.worldedit.EditSession;
@@ -18,9 +18,6 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockTypes;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import net.xdevelopment.xlibrary.schematic.SchematicProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -30,17 +27,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.concurrent.CompletableFuture;
 
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class FaweSchematicProvider implements SchematicProvider {
+public final class FaweSchematics {
 
-    @Override
-    public boolean init() {
-        return Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+    public FaweSchematics() {
+        if (!Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+            throw new IllegalStateException("FastAsyncWorldEdit is required but is not enabled!");
+        }
     }
 
-    @Override
     @NotNull
-    public CompletableFuture<Object> paste(@NotNull File file, @NotNull Location location) {
+    public CompletableFuture<EditSession> paste(@NotNull File file, @NotNull Location location) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 if (!file.exists()) return null;
@@ -72,7 +68,6 @@ public class FaweSchematicProvider implements SchematicProvider {
         });
     }
 
-    @Override
     @NotNull
     public CompletableFuture<File> save(@NotNull File file, @NotNull Location corner1, @NotNull Location corner2, boolean ignoreAir) {
         return CompletableFuture.supplyAsync(() -> {
@@ -92,7 +87,7 @@ public class FaweSchematicProvider implements SchematicProvider {
                     Operations.complete(copy);
                 }
 
-                try (ClipboardWriter writer = BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file))) {
+                try (ClipboardWriter writer = BuiltInClipboardFormat.SPONGE_V3_SCHEMATIC.getWriter(new FileOutputStream(file))) {
                     writer.write(clipboard);
                 }
 
@@ -103,17 +98,12 @@ public class FaweSchematicProvider implements SchematicProvider {
         });
     }
 
-    @Override
     @NotNull
-    public CompletableFuture<Void> undo(@NotNull Object session) {
-        if (!(session instanceof EditSession es)) {
-            return CompletableFuture.completedFuture(null);
-        }
-
+    public CompletableFuture<Void> undo(@NotNull EditSession session) {
         return CompletableFuture.runAsync(() -> {
-            World world = es.getWorld();
+            World world = session.getWorld();
             try (EditSession undoSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build()) {
-                es.undo(undoSession);
+                session.undo(undoSession);
             }
         });
     }

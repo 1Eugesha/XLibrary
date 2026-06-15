@@ -1,11 +1,12 @@
-package net.xdevelopment.xlibrary.utility.gui;
+package net.xdevelopment.xlibrary.gui.layout;
 
 import lombok.experimental.UtilityClass;
+import net.xdevelopment.xlibrary.gui.Menu;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 @UtilityClass
-public class MenuBuilder {
+public class SlotFinder {
 
     public int firstEmptySlot(Menu menu, int startSlot, int endSlot) {
         for (int i = startSlot; i <= endSlot; i++) {
@@ -16,5 +17,4 @@ public class MenuBuilder {
         }
         return -1;
     }
-
 }

@@ -11,6 +11,6 @@ The **Core** module does not contain any Bukkit/Paper classes. It contains exclu
 The **Paper** module depends on `core` and implements the functionality for the Paper server API:
 - **Command API**
 - **GUI Utilities**
-- **Schematic API**
+- **FAWE Schematic helper**
 
 This separation ensures that in the future, the `core` module can be reused on proxies like BungeeCord / Velocity without conflicting with Bukkit.

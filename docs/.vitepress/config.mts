@@ -34,7 +34,7 @@ export default defineConfig({
           items: [
             { text: 'Command API', link: '/paper/commands' },
             { text: 'GUI / Menus', link: '/paper/gui' },
-            { text: 'Schematics', link: '/paper/schematics' },
+            { text: 'Schematics (FAWE)', link: '/paper/schematics' },
             { text: 'Utilities', link: '/paper/utilities' }
           ]
         }
